@@ -11,6 +11,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Test/TestActor.h"
+#include "Test/Public/ModuleCharacterData.h"
+#include "PluginCharacterData.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -59,7 +61,34 @@ void AModuleAndPluginCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//필수과제 디버그
 	GetWorld()->SpawnActor<ATestActor>();
+
+	// 도전과제 모듈 버전
+	UModuleCharacterData* MyData = NewObject<UModuleCharacterData>(this);
+
+	// 모듈 확인 디버그
+	if (MyData != nullptr && GEngine != nullptr)
+	{
+		// 설정한 Hp와 Power 값을 가져옵니다,
+		FString DebugMessage = FString::Printf(TEXT("도전 과제 모듈 - HP: %f, Power: %f"), MyData->Hp, MyData->Power);
+
+		GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Cyan, DebugMessage);
+
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *DebugMessage);
+	}
+
+	//플러그인 확인
+	UPluginCharacterData* MyPluginData = NewObject<UPluginCharacterData>(this);
+
+	if (MyPluginData != nullptr && GEngine != nullptr)
+	{
+		FString PluginMessage = FString::Printf(TEXT("도전 과제 플러그인 - MP: %f, Defense: %f"), MyPluginData->MP, MyPluginData->Defense);
+
+		GEngine->AddOnScreenDebugMessage(1, 10.0f, FColor::Magenta, PluginMessage);
+
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *PluginMessage);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
